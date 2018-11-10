@@ -52,7 +52,6 @@ export default {
             url: 'http://localhost:8888/api/private/v1/login',
             data: this.form
           }).then(res => {
-            console.log(res.data)
             if (res.data.meta.status === 200) {
               // 登录成功 提示登录成功，存储taken 跳转首页
               this.$message.success(res.data.meta.msg)
@@ -65,7 +64,6 @@ export default {
           })
         } else {
           // 表单校验失败
-          console.log('error submit!!')
           return false
         }
       })
