@@ -7,13 +7,16 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入common.js
 import '@/assets/common.css'
-
-// 将axios挂在到vue原型上
 import axios from 'axios'
+// 引入element-tree-grid
+import ElTreeGrid from 'element-tree-grid'
+Vue.component(ElTreeGrid.name, ElTreeGrid)
+console.log(ElTreeGrid.name)
+// 将axios挂在到vue原型上
 
 Vue.prototype.axios = axios
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
 // 设置全局基础地址
+axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
 
 // 添加请求拦截器
 axios.interceptors.request.use(function(config) {

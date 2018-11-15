@@ -13,33 +13,25 @@
         <el-menu
           router
           unique-opened
-          default-active="3"
+          :default-active="$route.path.slice(1)"
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-submenu index="1">
+          <el-submenu
+            v-for="right in rightList"
+            :key="right.id"
+            :index="right.path" >
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{right.authName}}</span>
             </template>
-            <el-menu-item index="/users">
+            <el-menu-item
+              v-for="item in right.children"
+              :key="item.id"
+              :index="item.path">
               <i class="el-icon-menu"></i>
-              <span>用户列表</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="2-1">
-              <i class="el-icon-menu"></i>
-              <span>角色列表</span>
-            </el-menu-item>
-            <el-menu-item index="2-1">
-              <i class="el-icon-menu"></i>
-              <span>权限列表</span>
+              <span>{{item.authName}}</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
@@ -52,40 +44,45 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
-  methods: {
-    logout() {
-      this.$confirm('你确定要退出？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '退出成功'
-          })
-          // 删除token 跳到登录页
-          localStorage.removeItem('token')
-          this.$router.push('/login')
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消退出'
-          })
-        })
+  data() {
+    return {
+      rightList: []
     }
   },
-  created() {
-    axios({
+  methods: {
+    async logout() {
+      try {
+        await this.$confirm('你确定要退出？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        this.$message({
+          type: 'success',
+          message: '退出成功'
+        })
+        // 删除token 跳到登录页
+        localStorage.removeItem('token')
+        this.$router.push('/login')
+      } catch (err) {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
+      }
+    }
+  },
+  async created() {
+    let res = await this.axios({
       method: 'get',
-      url: 'http://localhost:8888/api/private/v1/menus',
-      xsrfHeaderName: localStorage.getItem('token')
-    }).then(res => {
-      // console.log(res.data)
+      url: 'http://localhost:8888/api/private/v1/menus'
     })
+    // console.log(res)
+    let { meta: { status }, data } = res
+    if (status === 200) {
+      this.rightList = data
+    }
   }
 }
 </script>

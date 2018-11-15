@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -44,24 +43,24 @@ export default {
     },
     // 表单提交
     submitForm() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
           // 表单校验成功 发送ajax请求，
-          axios({
+          let res = await this.axios({
             method: 'post',
-            url: 'http://localhost:8888/api/private/v1/login',
+            url: 'login',
             data: this.form
-          }).then(res => {
-            if (res.data.meta.status === 200) {
-              // 登录成功 提示登录成功，存储taken 跳转首页
-              this.$message.success(res.data.meta.msg)
-              localStorage.setItem('token', res.data.data.token)
-              this.$router.push('/home')
-            } else {
-              // 登录失败 提示登录失败
-              this.$message.error(res.data.meta.msg)
-            }
           })
+          let { meta: { msg, status }, data: { token } } = res
+          if (status === 200) {
+            // 登录成功 提示登录成功，存储taken 跳转首页
+            this.$message.success(msg)
+            localStorage.setItem('token', token)
+            this.$router.push('/home')
+          } else {
+            // 登录失败 提示登录失败
+            this.$message.error(msg)
+          }
         } else {
           // 表单校验失败
           return false
