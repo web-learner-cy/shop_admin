@@ -7,16 +7,23 @@ import Login from '@/components/Login.vue'
 import Home from '@/components/Home.vue'
 
 // 导入Users组件
-import Users from '@/components/Users.vue'
+import Users from '@/components/users/Users.vue'
 
 // 导入Rights组件
-import Rights from '@/components/Rights.vue'
+import Rights from '@/components/rights/Rights.vue'
 
 // 导入Roles组件
-import Roles from '@/components/Roles'
+import Roles from '@/components/rights/Roles'
 
 // 导入Categories组件
-import Categories from '@/components/Categories'
+import Categories from '@/components/products/Categories'
+
+// 导入goods组件
+import Goods from '@/components/products/Goods.vue'
+
+// 导入Goods-add组件
+import GoodsAdd from '@/components/products/Goods-add.vue'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -48,6 +55,14 @@ const router = new Router({
         {
           path: '/categories',
           component: Categories
+        },
+        {
+          path: '/goods',
+          component: Goods
+        },
+        {
+          path: '/goods-add',
+          component: GoodsAdd
         }
       ]
     }

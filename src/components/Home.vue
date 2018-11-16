@@ -13,7 +13,7 @@
         <el-menu
           router
           unique-opened
-          :default-active="$route.path.slice(1)"
+          :default-active="$route.path.slice(1).split('-')[0]"
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"

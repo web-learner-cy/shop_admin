@@ -56,6 +56,7 @@
         </el-form-item>
         <el-form-item label="父级名称" prop="cat_pid">
           <el-cascader
+            clearable
             :options="options"
             change-on-select
             :props="props"
@@ -129,7 +130,7 @@ export default {
       this.loading = true
       let res = await this.axios.get('categories', {
         params: {
-          params: 3,
+          type: 3,
           pagenum: this.currentPage,
           pagesize: this.pageSize
         }
